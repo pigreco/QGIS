@@ -58,6 +58,7 @@ class TestQgsProject : public QObject
     void testDefaultRelativePaths();
     void testAttachmentsQgs();
     void testAttachmentsQgz();
+    void testAttachmentIdentifier();
 };
 
 void TestQgsProject::init()
@@ -880,6 +881,18 @@ void TestQgsProject::testAttachmentsQgz()
     QVERIFY( p2.attachedFiles().size() == 1 );
     QVERIFY( p2.mapLayers().size() == 1 );
     QVERIFY( p2.mapLayer( p2.mapLayers().firstKey() )->source() == p2.attachedFiles().first() );
+  }
+
+}
+
+void TestQgsProject::testAttachmentIdentifier()
+{
+  // Verify attachment identifiers
+  {
+    QgsProject p;
+    QString attachmentFileName = p.createAttachedFile( "test.jpg" );
+    QString attachmentId = p.getAttachmentIdentifier( attachmentFileName );
+    QCOMPARE( p.resolveAttachementIdentifier( attachmentId ), attachmentFileName );
   }
 
 }

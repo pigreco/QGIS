@@ -3700,6 +3700,20 @@ bool QgsProject::removeAttachedFile( const QString &path )
   return mArchive->removeFile( path );
 }
 
+QString QgsProject::getAttachmentIdentifier( const QString &attachedFile ) const
+{
+  return QStringLiteral( "attachment:///%1" ).arg( QFileInfo( attachedFile ).fileName() );
+}
+
+QString QgsProject::resolveAttachementIdentifier( const QString &identifier ) const
+{
+  if ( identifier.startsWith( "attachment:///" ) )
+  {
+    return QDir( mArchive->dir() ).absoluteFilePath( identifier.mid( 14 ) );
+  }
+  return QString();
+}
+
 const QgsProjectMetadata &QgsProject::metadata() const
 {
   return mMetadata;
